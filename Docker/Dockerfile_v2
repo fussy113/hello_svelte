@@ -1,0 +1,21 @@
+# パッケージのインストールから開発サーバ立てるコマンドの実行までをコンテナに閉じ込める
+
+# nvmは正直いらない、すでにnodeがインストールしてあるイメージを元に作成できるから
+# これはcentosベース
+FROM node:12.14.1
+
+WORKDIR /root/app
+
+# buildの時に必要なファイルをcopyできる
+COPY ./ ./
+
+# installなんかもここでできる
+RUN npm install
+
+EXPOSE 5000
+
+# docker runの際にコンテナでどんなコマンドを実行するかを指定できる(わざわざshellに入る必要なし)
+CMD HOST=0.0.0.0 npm run dev
+
+# 実行コマンド
+# docker run --rm -it -p 5000:5000 hello_svelte:latest

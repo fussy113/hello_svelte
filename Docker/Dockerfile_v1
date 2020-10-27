@@ -1,0 +1,19 @@
+# なんのOSを立ち上げるよ
+FROM centos:latest
+
+# どこのディレクトリで作業するよ(cdで書くのはアンチ)
+WORKDIR /root
+
+# パッケージをインストールするよ
+RUN yum -y update
+RUN yum -y install git gcc-c++
+
+# nvmのインストール
+RUN git clone http://github.com/creationix/nvm.git /root/.nvm
+RUN sh /root/.nvm/install.sh
+RUN export NVM_DIR="$HOME/.nvm"
+RUN echo "[[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh" >> $HOME/.bashrc
+RUN source ./.bashrc && nvm install lts/erbium && nvm use lts/erbium
+
+# どのポートを使うかを宣言する
+EXPOSE 5000
